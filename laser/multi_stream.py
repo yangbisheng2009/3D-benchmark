@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 import cv2
 import numpy as np
 import traceback
@@ -6,7 +9,7 @@ import pyrealsense2 as rs
 
 parser = argparse.ArgumentParser(description="Read recorded bag file and display depth stream in jet colormap.\
                                 Remember to change the stream resolution, fps and format to match the recorded.")
-parser.add_argument("--input", type=str, help="Path to the bag file")
+parser.add_argument("--input", default='1.ply', type=str, help="Path to the bag file")
 parser.add_argument("--output", default='1.ply', type=str, help="Path to the bag file")
 args = parser.parse_args()
 
@@ -93,7 +96,7 @@ def import_ply():
     config = rs.config()
     # Tell config that we will use a recorded device from filem to be used by the pipeline through playback.
     rs.config.enable_device_from_file(config, args.input)
-    config.enable_stream(rs.stream.depth, 1280, 720, rs.format.z16, 30)
+    config.enable_stream(rs.stream.depth)
 
     # Start streaming from file
     pipeline.start(config)
@@ -126,6 +129,11 @@ def import_ply():
     finally:
         pipeline.stop()
 
+
+def main():
+    #align()
+    export_ply()
+    #import_ply()
 
 
 
